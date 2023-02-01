@@ -54,19 +54,17 @@ export default function BrickToByte() {
                     </Grid>
                 </Box>
             </Box>      
-            <Box sx={{position:"relative", height:"50vh", backgroundColor:"#141414"}}>
+            <Box sx={{position:"relative", height:"100vh", backgroundColor:"#141414"}}>
                 <Grid container spacing={2} height={1}>
                     <Grid item xs={1} md={2}/>
                     <Grid item xs={10} md={8}>
                         <Item sx={{height:'75%'}}>Test</Item>
                     </Grid>
                     <Grid item xs={1} md={2}/>
-                </Grid>
-            </Box>  
-            <Box sx={{position:"relative", height:"50vh", backgroundColor:"#141414"}}>
-                <Grid container spacing={2} height={1} justifyContent={'flex-end'}>
-                    <Grid item xs={6} md={6} sx={{border:1, borderColor:'white'}}>
-                        <Item sx={{height:'75%', width:'75%'}}>Test</Item>
+
+                    <Grid item xs={6} md={6} sx={{border:1, borderColor:'white', alignItems:"flex-end", justify:"center"}}>
+                        <Typography color="white">Text</Typography>
+                        {/* <Item sx={{height:'75%', width:'75%', }}>Test</Item> */}
                     </Grid>
                     <Grid item xs={6} md={6}/>
                 </Grid>
