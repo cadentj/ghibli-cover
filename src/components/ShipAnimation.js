@@ -7,6 +7,9 @@ import { Loader, Text,ScrollControls, useScroll, Points, PointMaterial } from '@
 import { useNavigate } from 'react-router-dom';
 import * as random from "maath/random";
 
+const Courier_Prime = "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
+const Montserrat = "https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+
 
 // Mouse tracking library data
 let trackedX;
@@ -37,47 +40,47 @@ const DeathStar = () => {
 };
 
 
-// const Cover = () => {
-//     return (
-//         <>
-//             <Text
-//                 scale={[15, 15, 1]}
-//                 position={[30, 25, 10]}
-//                 color="white" // default
-//                 font={Montserrat}
-//                 letterSpacing={0.3}
-//             >
-//                 CADEN
-//             </Text>
-//             <Text
-//                 scale={[15, 15, 1]}
-//                 position={[30, -25, 10]}
-//                 color="white" // default
-//                 font={Montserrat}
-//                 letterSpacing={0.3}
-//             >
-//                 JUANG
-//             </Text>
-//             <Text
-//                 scale={[2, 2, 30]}
-//                 position={[30, -40, 10]}
-//                 color="white" // default
-//                 font={Courier_Prime}
-//             >
-//                 &gt;&gt;&gt;  scroll to fly &lt;&lt;&lt;
-//             </Text>
-//             <Text
-//                 scale={[0.5, 0.5, 1]}
-//                 position={[0, -5, 0]}
-//                 color="white" // default
-//                 font={Courier_Prime}
-//                 letterSpacing={0.3}
-//             >
-//                 &gt;&gt;&gt;  click to continue &lt;&lt;&lt;
-//             </Text>
-//         </>
-//     )
-// };
+const Cover = () => {
+    return (
+        <>
+            <Text
+                scale={[15, 15, 1]}
+                position={[30, 25, 10]}
+                color="white" // default
+                font={"https://fonts.googleapis.com/css2?family=Montserrat&display=swap"}
+                letterSpacing={0.3}
+            >
+                CADEN
+            </Text>
+            <Text
+                scale={[15, 15, 1]}
+                position={[30, -25, 10]}
+                color="white" // default
+                font={"https://fonts.googleapis.com/css2?family=Montserrat&display=swap"}
+                letterSpacing={0.3}
+            >
+                JUANG
+            </Text>
+            <Text
+                scale={[2, 2, 30]}
+                position={[30, -40, 10]}
+                color="white" // default
+                font={Courier_Prime}
+            >
+                &gt;&gt;&gt;  scroll to fly &lt;&lt;&lt;
+            </Text>
+            <Text
+                scale={[0.5, 0.5, 1]}
+                position={[0, -5, 0]}
+                color="white" // default
+                font={Courier_Prime}
+                letterSpacing={0.3}
+            >
+                &gt;&gt;&gt;  click to continue &lt;&lt;&lt;
+            </Text>
+        </>
+    )
+};
 
 
 
@@ -171,7 +174,7 @@ const Composition = () => {
             <directionalLight position={[10, 10, 5]} intensity={2} />
             <directionalLight position={[-10, -10, -5]} intensity={1} />
             <Suspense>
-                {/* <Cover/> */}
+                <Cover/>
                 <Stars/>
                 <DeathStar />
                 <MouseTrackingShip/>

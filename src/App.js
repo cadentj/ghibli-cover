@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-// import Home from './pages/Home';
+import Home from './pages/Home';
 import Animation from './components/ShipAnimation';
-// import BrickToByte from './pages/BrickToByte';
+import BrickToByte from './pages/BrickToByte';
 
 import {
   Routes,
@@ -27,8 +27,8 @@ export default function App() {
       {/* <ButtonAppBar/> */}
       <Routes>
         <Route path="/" element={<Animation />} />
-        {/* <Route path="home" element={<Home />} />
-        <Route path="btb" element={<BrickToByte />} /> */}
+        <Route path="home" element={<Home />} />
+        <Route path="btb" element={<BrickToByte />} />
       </Routes>
     </ThemeProvider>
   );
