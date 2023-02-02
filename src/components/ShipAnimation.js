@@ -24,16 +24,13 @@ let y = 0;
 const DeathStar = () => {
     const fbx = useLoader(FBXLoader, "/Death Star/Death Star.FBX");
 
-    const ref = useRef();
-    // useFrame(() => (ref.current.rotation.y += 0.005));
 
     const deathStarMesh = <mesh
-        ref={ref}
         // Actual position
         position={[0,0,0]}
     >
         // Position around which the station rotates
-        <primitive  object={fbx} scale={0.05} />
+        <primitive  object={fbx} scale={0.05} rotation={[0,2,0]}/>
     </mesh>;
 
     return deathStarMesh;
@@ -45,7 +42,8 @@ const Cover = () => {
         <>
             <Text
                 scale={[15, 15, 1]}
-                position={[30, 25, 10]}
+                position={[0, 25, -20]}
+                rotation={[0,2,0]}
                 color="white" // default
                 font={"https://fonts.googleapis.com/css2?family=Montserrat&display=swap"}
                 letterSpacing={0.3}
@@ -53,8 +51,9 @@ const Cover = () => {
                 CADEN
             </Text>
             <Text
-                scale={[15, 15, 1]}
-                position={[30, -25, 10]}
+                scale={[15,15, 1]}
+                position={[0 -25,-20]}
+                rotation={[0,2,0]}
                 color="white" // default
                 font={"https://fonts.googleapis.com/css2?family=Montserrat&display=swap"}
                 letterSpacing={0.3}
@@ -63,7 +62,7 @@ const Cover = () => {
             </Text>
             <Text
                 scale={[2, 2, 30]}
-                position={[30, -40, 10]}
+                position={[30, -40, 0]}
                 color="white" // default
                 font={Courier_Prime}
             >
@@ -87,7 +86,7 @@ const Cover = () => {
 function Stars(props) {
     const ref = useRef();
 
-    // useFrame((state) => {ref.current.rotation.y += 0.004})
+    useFrame((state) => {ref.current.rotation.y += 0.0002})
 
     const [sphere] = useState(() => random.inSphere(new Float32Array(500), { radius: 75 }))
     return (
@@ -103,13 +102,12 @@ const StarDestroyer = () => {
     const gltf = useLoader(GLTFLoader, "/star_destroyer/scene.gltf");
 
     const ref = useRef();
-    // useFrame(() => (ref.current.rotation.y += 0.005));
+    useFrame(() => (ref.current.rotation.y += 0.01));
 
     const planetMesh = <mesh
         ref={ref}
-        position={[26, -3, 15]}
     >
-        <primitive object={gltf.scene} position={[-10, 0, 20]} rotation={[0,-Math.PI/1.8,0]} scale={0.3} />
+        <primitive object={gltf.scene} position={[-10, 0, 30]} rotation={[0,-Math.PI/1.8,0]} scale={0.5} />
     </mesh>;
 
     return planetMesh;
@@ -144,7 +142,7 @@ const Ship = () => {
         <mesh
             ref={ref}
         >
-            <primitive object={fbx} scale={0.001} position={[1.6,-.8,3]} rotation={[0,.5,0]}/>
+            <primitive object={fbx} scale={0.0005} position={[1.6,-.8,3]} rotation={[0,.5,0]}/>
         </mesh>
     );
 };
@@ -177,11 +175,11 @@ const Composition = () => {
         <orthographicCamera attach="shadow-camera" left={-20} right={20} top={20} bottom={-20} />
       </directionalLight>
             <Suspense>
-                {/* <Cover/> */}
+                <Cover/>
                 <Stars/>
                 <DeathStar />
                 <Ship/>
-                {/* <StarDestroyer/> */}
+                <StarDestroyer/>
             </Suspense>
         </>
     )
