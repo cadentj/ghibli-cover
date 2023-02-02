@@ -7,10 +7,8 @@ import { Loader, Text, ScrollControls, useScroll, Points, PointMaterial, Adaptiv
 import { useNavigate } from 'react-router-dom';
 import * as random from "maath/random";
 
+import Montseratt from './../fonts/Montserrat/static/Montserrat-Medium.ttf'
 const Courier_Prime = "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
-const Montserrat = "https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
-
-
 
 const DeathStar = () => {
     const fbx = useLoader(FBXLoader, "/Death Star/Death Star.FBX");
@@ -18,7 +16,7 @@ const DeathStar = () => {
 
     const deathStarMesh = <mesh
         // Actual position
-        position={[0, 0, 0]}
+        position={[0, -1, 0]}
     >
         // Position around which the station rotates
         <primitive object={fbx} scale={0.05} />
@@ -32,30 +30,31 @@ const Cover = () => {
     return (
         <>
             <Text
-                scale={[15, 15, 1]}
-                position={[0, 25, 0]}
+                scale={[10, 10, 1]}
+                position={[0, 15, 50]}
                 color="white" // default
-                font={"https://fonts.googleapis.com/css2?family=Montserrat&display=swap"}
+                font={Montseratt}
                 letterSpacing={0.3}
             >
                 CADEN
             </Text>
             <Text
-                scale={[15, 15, 1]}
-                position={[0, -25, 0]}
+                scale={[10, 10, 1]}
+                position={[0, -15, 50]}
                 color="white" // default
-                font={"https://fonts.googleapis.com/css2?family=Montserrat&display=swap"}
+                font={Montseratt}
+                
                 letterSpacing={0.3}
             >
                 JUANG
             </Text>
             <Text
                 scale={[2, 2, 30]}
-                position={[30, -40, 0]}
+                position={[0,-40,0]}
                 color="white" // default
                 font={Courier_Prime}
             >
-                &gt;&gt;&gt;  scroll to fly &lt;&lt;&lt;
+                &gt;&gt;&gt; scroll to fly &lt;&lt;&lt;
             </Text>
             <Text
                 scale={[0.5, 0.5, 1]}
@@ -64,7 +63,7 @@ const Cover = () => {
                 font={Courier_Prime}
                 letterSpacing={0.3}
             >
-                &gt;&gt;&gt;  click to continue &lt;&lt;&lt;
+                &gt;&gt;&gt; click to continue &lt;&lt;&lt;
             </Text>
         </>
     )
