@@ -3,9 +3,10 @@ import React, { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useLoader, useFrame } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { Loader, Text,ScrollControls, useScroll, Points, PointMaterial } from '@react-three/drei';
+import { Loader, Text,ScrollControls, useScroll, Points, PointMaterial, PerformanceMonitor } from '@react-three/drei';
 import { useNavigate } from 'react-router-dom';
 import * as random from "maath/random";
+import { Stats } from '@react-three/drei';
 
 const Courier_Prime = "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
 const Montserrat = "https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
@@ -164,7 +165,9 @@ const Composition = () => {
 
     useFrame((state, delta) => {
         const offset = scroll.offset
-        state.camera.position.set((30 - offset * 30), 2, (100 - offset * 80))
+        // state.camera.position.set((30 - offset * 30), 2, (100 - offset * 80))
+        // state.camera.position.set(30*Math.cos(offset*10), 30*Math.sin(offset*10), (100-offset*80))
+        state.camera.rotation.set(0, 30*Math.cos(offset), 0)
     })
     
     const ref = useRef()
@@ -177,7 +180,7 @@ const Composition = () => {
                 <Cover/>
                 <Stars/>
                 <DeathStar />
-                <MouseTrackingShip/>
+                {/* <MouseTrackingShip/> */}
                 <StarDestroyer/>
             </Suspense>
         </>
@@ -195,6 +198,7 @@ export default function Animation(props) {
         navigate('./home');
     }
 
+
     return (
         <div onMouseMove={(event) => {
             trackedX = event.clientX;
@@ -204,9 +208,11 @@ export default function Animation(props) {
             <Box sx={{height:"100vh", backgroundColor:"black"}}>
                 
                     <Canvas camera={{ fov: 70}} onClick={handleClick}>
+                        <PerformanceMonitor>
                         <ScrollControls pages={5}>
                             <Composition/>
                         </ScrollControls>
+                        </PerformanceMonitor>
                     </Canvas>
                     <Loader />
             </Box>
