@@ -6,7 +6,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Loader, Text,ScrollControls, useScroll, Points, PointMaterial, PerformanceMonitor } from '@react-three/drei';
 import { useNavigate } from 'react-router-dom';
 import * as random from "maath/random";
-import { Stats } from '@react-three/drei';
 
 const Courier_Prime = "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
 const Montserrat = "https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
@@ -26,12 +25,12 @@ const DeathStar = () => {
     const fbx = useLoader(FBXLoader, "/Death Star/Death Star.FBX");
 
     const ref = useRef();
-    useFrame(() => (ref.current.rotation.y += 0.005));
+    // useFrame(() => (ref.current.rotation.y += 0.005));
 
     const deathStarMesh = <mesh
         ref={ref}
         // Actual position
-        position={[30, -1, 15]}
+        position={[0,0,0]}
     >
         // Position around which the station rotates
         <primitive  object={fbx} scale={0.05} />
@@ -88,9 +87,9 @@ const Cover = () => {
 function Stars(props) {
     const ref = useRef();
 
-    useFrame((state) => {ref.current.rotation.y += 0.004})
+    // useFrame((state) => {ref.current.rotation.y += 0.004})
 
-    const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 200 }))
+    const [sphere] = useState(() => random.inSphere(new Float32Array(500), { radius: 75 }))
     return (
       <group >
         <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
@@ -104,7 +103,7 @@ const StarDestroyer = () => {
     const gltf = useLoader(GLTFLoader, "/star_destroyer/scene.gltf");
 
     const ref = useRef();
-    useFrame(() => (ref.current.rotation.y += 0.005));
+    // useFrame(() => (ref.current.rotation.y += 0.005));
 
     const planetMesh = <mesh
         ref={ref}
@@ -119,69 +118,70 @@ const StarDestroyer = () => {
 
 const Ship = () => {
     const fbx = useLoader(FBXLoader, "/X-Wing.fbx");
+
+    const scroll = useScroll()
+
+    const ref = useRef()
+
+    useFrame((state, delta) => {
+        
+        const line = scroll.range(0,1/4)
+        const spiral = scroll.range(1/4,1)
+        if (line < 1) {
+            ref.current.position.set(60-line*10,0+line*20,-50+line*50)
+            ref.current.rotation.set(0,Math.PI * (19/12), 0)
+        } else {
+            ref.current.position.set(50*Math.cos(spiral*10), (20-spiral*25), 50*Math.sin(spiral*10))
+            ref.current.rotation.set(0, -spiral*10 + (Math.PI * (19/12)), 0)
+        }
+
+
+        // ref.current.position.set(50*Math.cos(offset*10), (20-offset*25) - 0.5, 50*Math.sin(offset*10))
+        // ref.current.rotation.set(0, -offset*10 + (Math.PI * (19/12)), 0)
+    })
     
     return (
         <mesh
-            position={[0, 2, 15]}
-            rotation={[0, Math.PI, 0]}
+            ref={ref}
         >
-            <primitive object={fbx} scale={0.001} />
+            <primitive object={fbx} scale={0.001} position={[1.6,-.8,3]} rotation={[0,.5,0]}/>
         </mesh>
     );
 };
-
-const MouseTrackingShip = () => {
-
-    const ref = useRef()
-    useFrame(() => {
-        if ((trackedX !== null && !isNaN(trackedX)) && (trackedY !== null && !isNaN(trackedY))) {
-            const xFactor = width / 0.25;
-            const yFactor = height / 0.15;
-            const xHalf = width / 2;
-            const yHalf = height / 2;
-            let transformedX = (Math.abs(xHalf - trackedX) / xFactor) * ((trackedX < xHalf) ? -1 : 1);
-            let transformedY = (Math.abs(yHalf - trackedY) / yFactor) * ((trackedY > yHalf) ? -1 : 1);
-            transformedX /= 15;
-            transformedY /= 15;
-            x += (x < 0.35 && x > -0.35) ? transformedX : ((x >= 0) ? -0.0002 : 0.0002);
-            y += (y < 0.15 && y > -0.15) ? transformedY : ((y >= 0) ? -0.0002 : 0.0002);
-        } else {
-            x += 0;
-            x += 0;
-        }
-
-        ref.current.rotation.set(-y, x, 0)
-    })
-
-    return (
-        <mesh ref={ref}>
-            <Ship />
-        </mesh>
-    )
-}
 
 const Composition = () => {
     const scroll = useScroll()
 
     useFrame((state, delta) => {
-        const offset = scroll.offset
-        // state.camera.position.set((30 - offset * 30), 2, (100 - offset * 80))
-        // state.camera.position.set(30*Math.cos(offset*10), 30*Math.sin(offset*10), (100-offset*80))
-        state.camera.rotation.set(0, 30*Math.cos(offset), 0)
+        // const offset = scroll.offset
+        // state.camera.position.set(50*Math.cos(offset*10), (20-offset*25), 50*Math.sin(offset*10))
+        // state.camera.rotation.set(0, -offset*10 + (Math.PI * (9/12)), 0)
+
+        const line = scroll.range(0,1/4)
+        const spiral = scroll.range(1/4,1)
+        if (line < 1) {
+            state.camera.position.set(60-line*10,0+line*20,-50+line*50)
+            state.camera.rotation.set(0,Math.PI * (9/12), 0)
+        } else {
+            state.camera.position.set(50*Math.cos(spiral*10), (20-spiral*25), 50*Math.sin(spiral*10))
+            state.camera.rotation.set(0, -spiral*10 + (Math.PI * (9/12)), 0)
+        }
+
+
     })
-    
-    const ref = useRef()
 
     return (
         <>
-            <directionalLight position={[10, 10, 5]} intensity={2} />
-            <directionalLight position={[-10, -10, -5]} intensity={1} />
+            <ambientLight intensity={0.25} />   
+            <directionalLight castShadow intensity={2} position={[10, 6, 6]} shadow-mapSize={[1024, 1024]}>
+        <orthographicCamera attach="shadow-camera" left={-20} right={20} top={20} bottom={-20} />
+      </directionalLight>
             <Suspense>
-                <Cover/>
+                {/* <Cover/> */}
                 <Stars/>
                 <DeathStar />
-                {/* <MouseTrackingShip/> */}
-                <StarDestroyer/>
+                <Ship/>
+                {/* <StarDestroyer/> */}
             </Suspense>
         </>
     )
