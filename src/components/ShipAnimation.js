@@ -1,25 +1,15 @@
-import { Box, Typography } from '@mui/material';
-import React, { useRef, Suspense, useState, useEffect } from 'react';
+import { Box } from '@mui/material';
+import React, { useRef, Suspense, useState } from 'react';
 import { Canvas, useLoader, useFrame } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Loader, Text, ScrollControls, useScroll, Points, PointMaterial, AdaptiveDpr } from '@react-three/drei';
 import { useNavigate } from 'react-router-dom';
 import * as random from "maath/random";
-import { SpriteMaterial } from 'three';
 
 const Courier_Prime = "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
 const Montserrat = "https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
 
-
-// Mouse tracking library data
-let trackedX;
-let trackedY;
-let width;
-let height;
-// Frame updated ship position
-let x = 0;
-let y = 0;
 
 
 const DeathStar = () => {
@@ -131,7 +121,7 @@ const Ship = () => {
 
         spiral += Math.PI / 4
         if (line < 0.25) {
-            ref.current.position.set(0, -3 + line * 12, 100 - line * 50)
+            ref.current.position.set(0, -4 + line * 16, 100 - line * 50)
             ref.current.rotation.set(0, line * 0.785, 0)
         } else if (line < 1) {
             ref.current.position.set(0, 0, 100 - line * 50)
@@ -195,9 +185,6 @@ const Composition = () => {
 }
 
 export default function Animation(props) {
-    width = window.innerWidth;
-    height = window.innerHeight;
-
 
     let navigate = useNavigate();
 
@@ -207,20 +194,14 @@ export default function Animation(props) {
 
 
     return (
-        <div onMouseMove={(event) => {
-            trackedX = event.clientX;
-            trackedY = event.clientY;
-        }}>
-
-            <Box sx={{ height: "100vh", backgroundColor: "black" }}>
-                <Canvas performance={{ min: 0.5 }} camera={{ fov: 70 }} onClick={handleClick}>
-                    <ScrollControls pages={6} damping={1}>
-                        <Composition />
-                    </ScrollControls>
-                    <AdaptiveDpr pixelated />
-                </Canvas>
-                <Loader />
-            </Box>
-        </div>
+        <Box sx={{ height: "100vh", backgroundColor: "black" }}>
+            <Canvas performance={{ min: 0.5 }} camera={{ fov: 70 }} onClick={handleClick}>
+                <ScrollControls pages={6} damping={1}>
+                    <Composition />
+                </ScrollControls>
+                <AdaptiveDpr pixelated />
+            </Canvas>
+            <Loader />
+        </Box>
     )
 }

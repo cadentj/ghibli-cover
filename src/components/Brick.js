@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { AsciiEffect } from 'three-stdlib'
 
+import '../styles/btb.css';
 
 let width;
 let height;
@@ -19,8 +20,7 @@ const Model = () => {
   const scroll = useScroll()
   useFrame((state, delta) => {
     const a = scroll.range(0, 1)
-    ref.current.rotation.y = a * 3
-    console.log(a)
+    ref.current.rotation.y = a * 2
   })
 
 
@@ -119,19 +119,19 @@ const Composition = () => {
 const Page = () => {
   return (
     <Html fullscreen>
-      <Box sx={{height: '100vh', width: '100%' }}>
+      <Box sx={{ height: '100vh', width: '100%' }}>
         <Box sx={{ position: "relative", height: '100vh', width: '100%' }}>
           <Grid container direction="column"
             justifyContent="space-between"
             alignItems="stretch"
             height='100vh'
           >
-            <Grid item sx={{ pr: 20 }}>
+            <Grid item sx={{ pr: 30 }}>
               <Typography sx={{ color: "white", fontFamily: "Source Code Pro", fontSize: '150px', textAlign: "right" }}>
                 BRICK
               </Typography>
             </Grid>
-            <Grid item sx={{ pl: 20 }}>
+            <Grid item sx={{ pl: 30 }}>
               <Typography sx={{ color: "white", fontFamily: "Source Code Pro", fontSize: '150px' }}>
                 2 BYTE
               </Typography>
@@ -139,16 +139,20 @@ const Page = () => {
           </Grid>
         </Box>
       </Box>
-      <Box sx={{ position: "relative", height: "150vh", backgroundColor: "#141414" }}>
+      <Box sx={{ position: "relative", height: "150vh"}} id="background">
         <Grid container spacing={2} height={1}>
           <Grid item xs={1} md={2} />
           <Grid item container xs={10} md={8} sx={{ alignItems: "center", direction: "row", justifyContent: "center" }}>
-            <Item sx={{ height: '75%', width: '75%' }}>Test</Item>
+            <Typography variant={'h1'} color={'white'}>
+              Take your business online.
+            </Typography>
           </Grid>
           <Grid item xs={1} md={2} />
 
           <Grid item container xs={6} md={6} sx={{ alignItems: "center", direction: "row", justifyContent: "center" }}>
-            <Item sx={{ height: '75%', width: '75%', }}>Test</Item>
+            <Typography variant={'h4'} color={'white'}>
+              A zero-cost, dedicated service for your ideas.<br/>To build a website and more, contact us today. 
+            </Typography>
           </Grid>
           <Grid item xs={6} md={6} />
         </Grid>
@@ -171,12 +175,12 @@ export default function Brick(props) {
   return (
     <Box sx={{ height: "100vh", backgroundColor: "transparent", position: "absolute", height: '100vh', width: '100%' }}>
       <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
-        <ScrollControls pages={2}>
+        <ScrollControls pages={1} damping={0.5}>
           <Suspense>
             <directionalLight position={[10, 10, 5]} intensity={2} />
             <directionalLight position={[-10, -10, -5]} intensity={2} />
             <Model />
-            <Page/>
+            <Page />
             {/* <OrbitControls/> */}
             <AsciiRenderer fgColor="white" bgColor="#141414" />
 

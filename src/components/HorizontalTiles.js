@@ -1,19 +1,18 @@
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
-import { Canvas, useFrame, useThree,useLoader } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Image, ScrollControls, Scroll, useScroll, Text } from '@react-three/drei'
 import { useSnapshot } from 'valtio'
 import { Minimap } from './Minimap'
 import { state, damp } from './util'
 import { Vector3 } from "three";
-import { Box, Link } from '@mui/system'
+import { Box } from '@mui/system'
 
 
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import '../styles/tiles.css';
 
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import { Points, PointMaterial } from '@react-three/drei'
 import * as random from 'maath/random'
@@ -153,7 +152,7 @@ function Screen(props) {
 function Stars(props) {
     const ref = useRef();
 
-    useFrame((state) => {ref.current.rotation.y += 0.004})
+    useFrame((state) => {ref.current.rotation.y += 0.0005})
 
     const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 200 }))
     return (
@@ -166,7 +165,7 @@ function Stars(props) {
 }
 
 export default function HorizontalTiles() {
-    const [color, setColor] = useState("");
+    const [color, setColor] = useState("#141414");
 
     let navigate = useNavigate();
 
