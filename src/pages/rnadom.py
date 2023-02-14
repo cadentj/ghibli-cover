@@ -1,38 +1,4 @@
-import { Box, Typography, ThemeProvider, createTheme, Grid, Paper } from '@mui/material';
-import Brick from "../components/Brick";
-
-import { Parallax, ParallaxLayer } from '@react-spring/parallax'
-
-
-
-import React, { useState } from 'react';
-import '../styles/btb.css';
-
-
-const theme = createTheme({
-    typography: {
-        fontFamily: 'Source Code Pro, Montserrat, Roboto',
-    },
-    palette: {
-        mode: 'dark',
-    },
-});
-
-
-
-export default function BrickToByte() {
-    const [X, setX] = useState(0);
-    const [Y, setY] = useState(0);
-
-
-    return (
-        <ThemeProvider theme={theme} >
-            <Brick mousePosition={[X,Y]}/>
-            <div style={{ height: '100%', width: "100%" }} onMouseMove={(event) => {
-                setX(event.clientX)
-                setY(event.clientY)
-            }}>
-                <Parallax pages={4}>
+<Parallax pages={5} style={{ backgroundColor: '#141414' }}>
 
                     <ParallaxLayer offset={0} speed={0} factor={1} style={{ width: '100%' }}>
 
@@ -55,7 +21,7 @@ export default function BrickToByte() {
 
                     </ParallaxLayer>
 
-                    <ParallaxLayer offset={1} speed={0} factor={1} id={"background"}>
+                    <ParallaxLayer offset={1} speed={0} factor={1} style={{ backgroundColor: '#141414' }}>
 
                         <Grid container height={"100%"}>
                             <Grid item xs={1} md={2} />
@@ -70,9 +36,9 @@ export default function BrickToByte() {
                     </ParallaxLayer>
 
 
-                    <ParallaxLayer sticky={{ start: 2, end: 3 }} speed={0} factor={1}>
+                    <ParallaxLayer sticky={{ start: 2, end: 5 }} speed={0} factor={1}>
                         <Grid container spacing={2} height={1}>
-                            <Grid item container xs={6} md={6} sx={{ alignItems: "center", direction: "row", justifyContent: "center",backgroundColor: '#141414'  }}>
+                            <Grid item container xs={6} md={6} sx={{ alignItems: "center", direction: "row", justifyContent: "center" }}>
                                 <Typography variant={'h4'} color={'white'}>
                                     A zero-cost, dedicated service for your ideas.<br />To build a website and more, contact us today.
                                 </Typography>
@@ -106,7 +72,3 @@ export default function BrickToByte() {
                     </ParallaxLayer>
 
                 </Parallax>
-            </div>
-        </ThemeProvider>
-    );
-}

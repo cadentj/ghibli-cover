@@ -17,6 +17,7 @@ import '../styles/tiles.css';
 import { Points, PointMaterial } from '@react-three/drei'
 import * as random from 'maath/random'
 
+import Montseratt from './../fonts/Montserrat/static/Montserrat-SemiBold.ttf'
 
 const dummy = new Vector3()
 let xDim;
@@ -120,7 +121,7 @@ function Screen(props) {
                 scale={[1, 1, 10]}
                 position={[0, 1.5, 0]}
                 color={textColor} // default
-                // font={Montserrat}
+                font={Montseratt}
                 letterSpacing={0.3}
             >
                 {titleTop}
@@ -129,7 +130,7 @@ function Screen(props) {
                 scale={[.15, .15, 10]}
                 position={[0, -2.5, 0]}
                 color={textColor} // default
-                // font={Montserrat}
+                font={Montseratt}
                 letterSpacing={0.3}
                 onClick={() => props.handleClick(link)}
             >
@@ -139,7 +140,7 @@ function Screen(props) {
                 scale={[1, 1, 10]}
                 position={[0, -1.5, 0]}
                 color={textColor} // default
-                // font={Montserrat}
+                font={Montseratt}
                 letterSpacing={0.3}
             >
                 {titleBottom}

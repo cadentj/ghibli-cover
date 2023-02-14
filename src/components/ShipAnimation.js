@@ -7,7 +7,7 @@ import { Loader, Text, ScrollControls, useScroll, Points, PointMaterial, Adaptiv
 import { useNavigate } from 'react-router-dom';
 import * as random from "maath/random";
 
-import Montseratt from './../fonts/Montserrat/static/Montserrat-Medium.ttf'
+import Montseratt from './../fonts/Montserrat/static/Montserrat-SemiBold.ttf'
 const Courier_Prime = "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
 
 const DeathStar = () => {
@@ -30,7 +30,7 @@ const Cover = () => {
     return (
         <>
             <Text
-                scale={[10, 10, 1]}
+                scale={[8, 8, 1]}
                 position={[0, 15, 50]}
                 color="white" // default
                 font={Montseratt}
@@ -39,7 +39,7 @@ const Cover = () => {
                 CADEN
             </Text>
             <Text
-                scale={[10, 10, 1]}
+                scale={[8, 8, 1]}
                 position={[0, -15, 50]}
                 color="white" // default
                 font={Montseratt}
