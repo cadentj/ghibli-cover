@@ -1,16 +1,11 @@
-import { Box, Typography, Grid, Paper, styled } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useRef, Suspense, useState, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
-import { Vector3 } from "three";
-import { Loader, Text, Html, ScrollControls, useScroll, Points, PointMaterial } from '@react-three/drei';
-import { useNavigate } from 'react-router-dom';
-
 import { AsciiEffect } from 'three-stdlib'
-
-import '../styles/btb.css';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-
+const screenWidth = window.innerHeight;
+const screenheight = window.innerHeight;
 
 const Model = (props) => {
   const gltf = useLoader(GLTFLoader, "/mario_brick_block/scene.gltf");
@@ -20,9 +15,9 @@ const Model = (props) => {
   let Y = props.mousePosition[1]
 
   useFrame((state, delta) => {
-    ref.current.rotation.set(-Y/1000,X/1000,0)
+    // ref.current.rotation.set(Y/screenheight,X/screenWidth,0)
+    ref.current.rotation.set(0, X / screenWidth, 0)
   })
-
 
   return (
     <mesh
@@ -32,6 +27,32 @@ const Model = (props) => {
     </mesh>
   );
 };
+
+const Composition = (props) => {
+
+  return (
+    <>
+      <Suspense>
+        <directionalLight position={[10, 10, 5]} intensity={2} />
+        <directionalLight position={[-10, -10, -5]} intensity={2} />
+        <Model mousePosition={props.mousePosition} />
+        <AsciiRenderer fgColor="white" bgColor="#141414" />
+
+      </Suspense>
+    </>
+  )
+}
+
+export default function Brick(props) {
+
+  return (
+    <Box sx={{ height: "100vh", backgroundColor: "transparent", position: "absolute", width: '100%' }}>
+      <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
+        <Composition mousePosition={props.mousePosition} />
+      </Canvas>
+    </Box>
+  )
+}
 
 
 
@@ -85,47 +106,3 @@ function AsciiRenderer({
 
   // This component returns nothing, it is a purely logical
 }
-
-const Composition = () => {
-  const scroll = useScroll()
-
-  useFrame((state, delta) => {
-    const offset = scroll.offset
-    state.camera.position.set((30 - offset * 30), 2, (100 - offset * 80))
-  })
-
-  const ref = useRef()
-
-  return (
-    <>
-      <Suspense>
-        <directionalLight position={[10, 10, 5]} intensity={2} />
-        <directionalLight position={[-10, -10, -5]} intensity={2} />
-        <Brick />
-        {/* <OrbitControls/> */}
-        <AsciiRenderer fgColor="white" bgColor="#141414" />
-
-      </Suspense>
-    </>
-  )
-}
-
-export default function Brick(props) {
-
-  return (
-    <Box sx={{ height: "100vh", backgroundColor: "transparent", position: "absolute", width: '100%' }}>
-      <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
-        <ScrollControls pages={1}>
-          <Suspense>
-            <directionalLight position={[10, 10, 5]} intensity={2} />
-            <directionalLight position={[-10, -10, -5]} intensity={2} />
-            <Model mousePosition={props.mousePosition}/>
-            <AsciiRenderer fgColor="white" bgColor="#141414" />
-
-          </Suspense>
-        </ScrollControls>
-      </Canvas>
-    </Box>
-  )
-}
-
