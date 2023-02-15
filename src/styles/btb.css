@@ -1,9 +1,38 @@
 #background {
-    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), #141414 50%)
+	background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), #141414 50%)
 }
 
-.centered { 
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.centered {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+
+.left {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	align-content: center;
+}
+
+.right {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-end;
+	align-items: center;
+	align-content: center;
+}
+
+.animated__layers {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
 }

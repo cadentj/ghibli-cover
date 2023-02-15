@@ -17,6 +17,7 @@ const Model = (props) => {
   useFrame((state, delta) => {
     // ref.current.rotation.set(Y/screenheight,X/screenWidth,0)
     ref.current.rotation.set(0, X / screenWidth, 0)
+    ref.current.position.set((X/20)-50, (-Y/20)+10, 0)
   })
 
   return (
@@ -35,7 +36,7 @@ const Composition = (props) => {
       <Suspense>
         <directionalLight position={[10, 10, 5]} intensity={2} />
         <directionalLight position={[-10, -10, -5]} intensity={2} />
-        <Model mousePosition={props.mousePosition} />
+        {/* <Model mousePosition={props.mousePosition} /> */}
         <AsciiRenderer fgColor="white" bgColor="#141414" />
 
       </Suspense>
