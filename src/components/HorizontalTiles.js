@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Image, ScrollControls, Scroll, useScroll, Text } from '@react-three/drei'
+import { Image, ScrollControls, Scroll, useScroll, Text, KeyboardControls,useKeyboardControls } from '@react-three/drei'
 import { useSnapshot } from 'valtio'
 import { Minimap } from './Minimap'
 import { state, damp } from './util'
@@ -38,8 +38,11 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
     const scroll = useScroll()
     const { clicked, urls } = useSnapshot(state)
     const [hovered, hover] = useState(false)
+    const [, get] = useKeyboardControls()
 
-    window.HTMLElement.prototype.scrollIntoView = function () { };
+    const [leftSafety, leftSwitch] = useState(true)
+    const [rightSafety, rightSwitch] = useState(true)
+
     const click = () => {
         state.clicked = index === clicked ? null : index
         props.setTitles(titles[index])
@@ -47,6 +50,8 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
         props.setColor(colors[index])
         props.setTextColor(textColors[index])
     }
+
+
     const over = () => hover(true)
     const out = () => hover(false)
 
@@ -57,27 +62,45 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
         props.setColor("#141414")
     }
 
+    function change(newIndex) {
+        state.clicked = newIndex
+        props.setTitles(titles[newIndex])
+        props.setLink(pageLinks[newIndex])
+        props.setColor(colors[newIndex])
+        props.setTextColor(textColors[newIndex])
+    }
+
     function checkClicked() {
         return state.clicked == null
     }
 
     useFrame((state, delta) => {
+        const { left, right } = get()
         const difference = scroll.offset * xDim
         const newIndex = (clicked === null) ? 0 : index - clicked;
         const y = scroll.curve(index / urls.length - 1.5 / urls.length, 4 / urls.length)
-        ref.current.material.scale[1] = ref.current.scale.y = damp(ref.current.scale.y, (clicked !== null) ? 3.5 : 2 + y, 4, delta)
-        ref.current.material.scale[0] = ref.current.scale.x = damp(ref.current.scale.x, (clicked !== null) ? 4.7 : scale[0], 6, delta)
+        ref.current.material.scale[1] = ref.current.scale.y = damp(ref.current.scale.y, (clicked !== null) ? 5.5 : 4 + y, 4, delta)
+        ref.current.material.scale[0] = ref.current.scale.x = damp(ref.current.scale.x, (clicked !== null) ? 8 : scale[0], 6, delta)
 
         // Switch to 0.85 and clicked===index to have normal tiling
-        if (clicked !== null && index < clicked) ref.current.position.x = damp(ref.current.position.x, difference + (newIndex * 4.85) - 2, 6, delta)
-        if (clicked !== null && index > clicked) ref.current.position.x = damp(ref.current.position.x, difference + (newIndex * 4.85) + 2, 6, delta)
+        if (clicked !== null && index < clicked) ref.current.position.x = damp(ref.current.position.x, difference + (newIndex * 4.85) - 4, 6, delta)
+        if (clicked !== null && index > clicked) ref.current.position.x = damp(ref.current.position.x, difference + (newIndex * 4.85) + 4, 6, delta)
         if (clicked === null) ref.current.position.x = damp(ref.current.position.x, position[0], 6, delta)
 
         if (clicked === index) ref.current.position.x = damp(ref.current.position.x, difference, 6, delta)
-        // if (scroll.delta > 0.001) unclick()
-        // if (clicked === null) props.setTitles("")
-        // if (clicked === null) props.setColors("#141414")
-        if (scroll.delta > 0.0085 || checkClicked()) unclick()
+
+        // if (scroll.delta > 0.0005 || checkClicked()) unclick()
+        if (checkClicked()) unclick()
+
+        if (!left) leftSwitch(true)
+        if (!right) rightSwitch(true)
+        if ((left && clicked != 0 ) && leftSafety) {
+            change(clicked - 1)
+            leftSwitch(false)
+        } if ((right && clicked != urls.length - 1 ) && rightSafety) {
+            change(clicked + 1)
+            rightSwitch(false)
+        }
 
         ref.current.material.grayscale = damp(ref.current.material.grayscale, hovered || clicked === index ? 0 : Math.max(0, 1 - y), 6, delta)
         ref.current.material.color.lerp(c.set(hovered || clicked === index ? 'white' : '#aaa'), hovered ? 0.3 : 0.1)
@@ -94,7 +117,7 @@ function Items({ w = 0.7, gap = 0.15, setTitles, setLink, setColor, setTextColor
         <ScrollControls horizontal damping={0.40} pages={(width - xW + urls.length * xW) / width}>
             <Minimap />
             <Scroll>
-                {urls.map((url, i) => <Item key={i} index={i} position={[xW * i, 0, 0]} scale={[w, 4, 1]} url={url} setTitles={setTitles} setLink={setLink} setColor={setColor} setTextColor={setTextColor} />) /* prettier-ignore */}    
+                {urls.map((url, i) => <Item key={i} index={i} position={[xW * i, 0, 0]} scale={[w, 4, 1]} url={url} setTitles={setTitles} setLink={setLink} setColor={setColor} setTextColor={setTextColor} />) /* prettier-ignore */}
             </Scroll>
         </ScrollControls>
     )
@@ -112,8 +135,8 @@ function Screen(props) {
         setBottom(split[1])
     }
 
-    
-    
+
+
     return (
 
         <>
@@ -153,15 +176,15 @@ function Screen(props) {
 function Stars(props) {
     const ref = useRef();
 
-    useFrame((state) => {ref.current.rotation.y += 0.0005})
+    useFrame((state) => { ref.current.rotation.y += 0.0005 })
 
     const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 200 }))
     return (
-      <group >
-        <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
-          <PointMaterial transparent color="#ffffff" size={0.3} sizeAttenuation={true} depthWrite={false} />
-        </Points>
-      </group>
+        <group >
+            <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
+                <PointMaterial transparent color="#ffffff" size={0.3} sizeAttenuation={true} depthWrite={false} />
+            </Points>
+        </group>
     )
 }
 
@@ -177,14 +200,20 @@ export default function HorizontalTiles() {
 
     const [titleTop, setTop] = useState("");
 
+
     return (
         <>
-        <Box sx={{ height: '100vh', width: '100%', position: 'fixed', backgroundColor: color }} className="background">
-            <Canvas gl={{ antialias: false }} dpr={[1, 1.5]} onPointerMissed={() => (state.clicked = null)}>
-                <Screen setColor={setColor} handleClick={handleClick} />
-                <Stars/>
-            </Canvas>
-        </Box>
+            <KeyboardControls
+                map={[
+                    { name: "left", keys: ["ArrowLeft"] },
+                    { name: "right", keys: ["ArrowRight"] },
+                ]}>
+                <Box sx={{ height: '100vh', width: '100%', position: 'fixed', backgroundColor: color }} className="background" >
+                    <Canvas gl={{ antialias: false }} dpr={[1, 1.5]} onPointerMissed={() => (state.clicked = null)}>
+                        <Screen setColor={setColor} handleClick={handleClick} />
+                    </Canvas>
+                </Box>
+            </KeyboardControls>
         </>
     )
 }
