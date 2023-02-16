@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Image, ScrollControls, Scroll, useScroll, Text, KeyboardControls,useKeyboardControls } from '@react-three/drei'
+import { Image, ScrollControls, Scroll, useScroll, Text, KeyboardControls, useKeyboardControls } from '@react-three/drei'
 import { useSnapshot } from 'valtio'
 import { Minimap } from './Minimap'
 import { state, damp } from './util'
@@ -26,6 +26,8 @@ const pageLinks = ["btb", "HOUSING MODEL", "EMAIL BOT", "THUNDER DASH", "CODE CL
 const colors = ["#484A68", "#ECE8DE", "#DE4C3F", "#DE4C3F", "#DE4C3F", "#DE4C3F"]
 const textColors = ["#EED450", "#55729C", "#FFF1CE", "#FFF1CE", "#FFF1CE", "#FFF1CE"]
 
+let keyPressed;
+
 function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
 
     // let navigate = useNavigate();484A68
@@ -38,10 +40,6 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
     const scroll = useScroll()
     const { clicked, urls } = useSnapshot(state)
     const [hovered, hover] = useState(false)
-    const [, get] = useKeyboardControls()
-
-    const [leftSafety, leftSwitch] = useState(true)
-    const [rightSafety, rightSwitch] = useState(true)
 
     const click = () => {
         state.clicked = index === clicked ? null : index
@@ -75,7 +73,6 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
     }
 
     useFrame((state, delta) => {
-        const { left, right } = get()
         const difference = scroll.offset * xDim
         const newIndex = (clicked === null) ? 0 : index - clicked;
         const y = scroll.curve(index / urls.length - 1.5 / urls.length, 4 / urls.length)
@@ -92,15 +89,15 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
         // if (scroll.delta > 0.0005 || checkClicked()) unclick()
         if (checkClicked()) unclick()
 
-        if (!left) leftSwitch(true)
-        if (!right) rightSwitch(true)
-        if ((left && clicked != 0 ) && leftSafety) {
+        // 37 is left arrow, 39 is right arrow
+        if (keyPressed == 37 && (clicked != 0 && clicked != null)) {
             change(clicked - 1)
-            leftSwitch(false)
-        } if ((right && clicked != urls.length - 1 ) && rightSafety) {
+            keyPressed = null
+        } else if (keyPressed == 39 && (clicked != urls.length - 1 && clicked != null)) {
             change(clicked + 1)
-            rightSwitch(false)
+            keyPressed = null
         }
+
 
         ref.current.material.grayscale = damp(ref.current.material.grayscale, hovered || clicked === index ? 0 : Math.max(0, 1 - y), 6, delta)
         ref.current.material.color.lerp(c.set(hovered || clicked === index ? 'white' : '#aaa'), hovered ? 0.3 : 0.1)
@@ -200,20 +197,28 @@ export default function HorizontalTiles() {
 
     const [titleTop, setTop] = useState("");
 
+    function onKeyPressed(e) {
+        keyPressed = e.keyCode
+    }
 
     return (
         <>
-            <KeyboardControls
-                map={[
-                    { name: "left", keys: ["ArrowLeft"] },
-                    { name: "right", keys: ["ArrowRight"] },
-                ]}>
-                <Box sx={{ height: '100vh', width: '100%', position: 'fixed', backgroundColor: color }} className="background" >
-                    <Canvas gl={{ antialias: false }} dpr={[1, 1.5]} onPointerMissed={() => (state.clicked = null)}>
-                        <Screen setColor={setColor} handleClick={handleClick} />
-                    </Canvas>
-                </Box>
-            </KeyboardControls>
+            <div
+                onKeyDown={onKeyPressed}
+                tabIndex={0}
+            >
+                <KeyboardControls
+                    map={[
+                        { name: "left", keys: ["ArrowLeft"] },
+                        { name: "right", keys: ["ArrowRight"] },
+                    ]}>
+                    <Box sx={{ height: '100vh', width: '100%', position: 'fixed', backgroundColor: color }} className="background" >
+                        <Canvas gl={{ antialias: false }} dpr={[1, 1.5]} onPointerMissed={() => (state.clicked = null)}>
+                            <Screen setColor={setColor} handleClick={handleClick} />
+                        </Canvas>
+                    </Box>
+                </KeyboardControls>
+            </div>
         </>
     )
 }
