@@ -22,41 +22,36 @@ const theme = createTheme({
 
 
 export default function BrickToByte() {
-    const [X, setX] = useState(0);
-    const [Y, setY] = useState(0);
-
     const [textStyles, textApi] = useSpring(() => ({
-        opacity: '1',
+        opacity: '0',
     }))
 
-    const SomeComponent = ({ onVisible, ...props }) => {
+    const [boxSlide1, boxApi1] = useSpring(() => ({
+        x: -50,
+        opacity: '0',
+    }))
+
+    const [boxSlide2, boxApi2] = useSpring(() => ({
+        x: -50,
+        opacity: '0',
+    }))
+
+    const RevealDiv = ({ onVisible, ...props }) => {
         const nodeRef = useRef();
         const isVisible = useIsVisible(nodeRef);
 
         React.useEffect(() => {
             onVisible(isVisible);
-            if (isVisible) {
-                textApi.start({ opacity: '1', delay: 300 })
-            } else {
-                textApi.start({ opacity: '0' })
-            }
         }, [onVisible, isVisible]);
 
-        return <div ref={nodeRef} {...props} />;
+        return <animated.div ref={nodeRef} style={props.styleHook} {...props} />;
     };
 
     return (
         <ThemeProvider theme={theme} >
-            <Brick mousePosition={[X, Y]} />
-            <div
-                style={{ height: '100%', width: "100%" }}
-                onMouseMove={(event) => {
-                    setX(event.clientX)
-                    setY(event.clientY)
-                }}
-            >
+            <Brick />
+            <div style={{ height: '100%', width: "100%" }}>
                 <Parallax pages={4}>
-
                     <ParallaxLayer offset={0} speed={0} factor={1} style={{ width: '100%' }}>
 
                         <Grid container direction="column"
@@ -79,13 +74,19 @@ export default function BrickToByte() {
                     </ParallaxLayer>
 
                     <ParallaxLayer offset={1} speed={0} factor={1} id={"background"} className="centered" >
-                        <SomeComponent onVisible={(isVisible) => console.log("Transformed to:", isVisible)}>
-                            <animated.div style={textStyles}>
-                                <Typography variant={'h1'} color={'white'}>
-                                    Take your business online.
-                                </Typography>
-                            </animated.div>
-                        </SomeComponent>
+                        <RevealDiv
+                            onVisible={(isVisible) => {
+                                if (isVisible) {
+                                    textApi.start({ opacity: '1', delay: 400 })
+                                }
+
+                            }}
+                            styleHook={textStyles}
+                        >
+                            <Typography variant={'h1'} color={'white'}>
+                                Take your business online.
+                            </Typography>
+                        </RevealDiv>
                     </ParallaxLayer>
 
                     <ParallaxLayer sticky={{ start: 2, end: 3 }} speed={0} className="left">
@@ -95,11 +96,31 @@ export default function BrickToByte() {
                     </ParallaxLayer>
 
                     <ParallaxLayer offset={2} speed={0} factor={1} style={{ backgroundColor: '#141414' }} className="right">
-                        <Box component="img" sx={{ width: "50%" }} src="/pictures/1.png" />
+                        <RevealDiv
+                            onVisible={(isVisible) => {
+                                if (isVisible) {
+                                    boxApi1.start({ x: 0, opacity: '1', delay: 200 })
+                                }
+                            }}
+                            styleHook={boxSlide1}
+                            className="right"
+                        >
+                            <Box component="img" sx={{ width: "35%" }} src="/pictures/1.png" />
+                        </RevealDiv>
                     </ParallaxLayer>
 
                     <ParallaxLayer offset={3} speed={0} factor={1} style={{ backgroundColor: '#141414' }} className="right">
-                        <Box component="img" sx={{ width: "50%" }} src="/pictures/1.png" />
+                        <RevealDiv
+                            onVisible={(isVisible) => {
+                                if (isVisible) {
+                                    boxApi2.start({ x: 0, opacity: '1', delay: 200 })
+                                }
+                            }}
+                            styleHook={boxSlide2}
+                            className="right"
+                        >
+                            <Box component="img" sx={{ width: "35%"}} src="/pictures/1.png" />
+                        </RevealDiv>
                     </ParallaxLayer>
 
                 </Parallax>

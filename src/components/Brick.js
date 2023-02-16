@@ -11,13 +11,8 @@ const Model = (props) => {
   const gltf = useLoader(GLTFLoader, "/mario_brick_block/scene.gltf");
   const ref = useRef();
 
-  let X = props.mousePosition[0]
-  let Y = props.mousePosition[1]
-
   useFrame((state, delta) => {
     // ref.current.rotation.set(Y/screenheight,X/screenWidth,0)
-    ref.current.rotation.set(0, X / screenWidth, 0)
-    ref.current.position.set((X/20)-50, (-Y/20)+10, 0)
   })
 
   return (
@@ -29,14 +24,14 @@ const Model = (props) => {
   );
 };
 
-const Composition = (props) => {
+const Composition = () => {
 
   return (
     <>
       <Suspense>
         <directionalLight position={[10, 10, 5]} intensity={2} />
         <directionalLight position={[-10, -10, -5]} intensity={2} />
-        {/* <Model mousePosition={props.mousePosition} /> */}
+        <Model />
         <AsciiRenderer fgColor="white" bgColor="#141414" />
 
       </Suspense>
@@ -44,12 +39,12 @@ const Composition = (props) => {
   )
 }
 
-export default function Brick(props) {
+export default function Brick() {
 
   return (
     <Box sx={{ height: "100vh", backgroundColor: "transparent", position: "absolute", width: '100%' }}>
       <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
-        <Composition mousePosition={props.mousePosition} />
+        <Composition/>
       </Canvas>
     </Box>
   )
