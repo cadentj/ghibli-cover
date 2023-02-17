@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Home from './pages/Home';
 import Animation from './components/ShipAnimation';
 import BrickToByte from './pages/BrickToByte';
+import Cover from './pages/Cover';
 import ButtonAppBar from './components/ButtonAppBar';
 import Brick from './components/Brick'
 
@@ -28,7 +29,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <ButtonAppBar/>
       <Routes>
-        <Route path="/" element={<Animation />} />
+        <Route path="/" element={<Cover />} />
         <Route path="home" element={<Home />} />
         <Route path="btb" element={<BrickToByte />} />
       </Routes>

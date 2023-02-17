@@ -24,7 +24,7 @@ let xDim;
 const titles = ["BRICK2 BYTE", "HOUSING MODEL", "EMAIL BOT", "THUNDER DASH", "CODE CLUB", "AI CLUB"]
 const pageLinks = ["btb", "HOUSING MODEL", "EMAIL BOT", "THUNDER DASH", "CODE CLUB", "AI CLUB"]
 const colors = ["#484A68", "#ECE8DE", "#DE4C3F", "#DE4C3F", "#DE4C3F", "#DE4C3F"]
-const textColors = ["#EED450", "#55729C", "#FFF1CE", "#FFF1CE", "#FFF1CE", "#FFF1CE"]
+const textColors = ["#FFF1CE", "#55729C", "#FFF1CE", "#FFF1CE", "#FFF1CE", "#FFF1CE"]
 
 let keyPressed;
 
