@@ -1,30 +1,33 @@
 import * as THREE from 'three'
 import React, { Suspense, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Plane, useAspect, useTexture, Image, OrbitControls } from '@react-three/drei'
-// import { EffectComposer, DepthOfField, Vignette } from '@react-three/postprocessing'
+import { Plane, useAspect, useTexture, Image, OrbitControls, Text } from '@react-three/drei'
+import { EffectComposer, DepthOfField, Vignette } from '@react-three/postprocessing'
 
-import bgUrl from '../resources/bg.jpg'
+
 import { Box } from '@mui/system'
-import starsUrl from '../resources/stars.png'
-import groundUrl from '../resources/ground.png'
+
+import bgUrl from '../resources/top.png'
+import starsUrl from '../resources/middle.png'
+import groundUrl from '../resources/bottom.png'
 import bearUrl from '../resources/bear.png'
 import leaves1Url from '../resources/leaves1.png'
 import leaves2Url from '../resources/leaves2.png'
+
+import Ghibli from './../fonts/ghibli/Eyad Al-Samman - Ghibli-Bold.otf'
+
 
 function Scene() {
     const scaleN = useAspect(1600, 1000, 1.05)
     const scaleW = useAspect(2200, 1000, 1.05)
     const group = useRef()
+    const subject = useRef()
 
     const textures = [bgUrl, starsUrl, groundUrl, bearUrl, leaves1Url, leaves2Url]
     const layers = [
         { texture: textures[0], scale: scaleW, z: 0 },
         { texture: textures[1], scale: scaleW, z: 10 },
         { texture: textures[2], scale: scaleW, z: 20 },
-        { texture: textures[3], scale: scaleN, z: 30, scaleFactor: 0.83 },
-        { texture: textures[4], scale: scaleW, z: 40, scaleFactor: 1 },
-        { texture: textures[5], scale: scaleW, z: 50, scaleFactor: 1.3 },
     ]
 
     useFrame((state, delta) => {
@@ -34,9 +37,29 @@ function Scene() {
     })
     return (
         <group ref={group}>
-            {layers.map(({ texture, scale, z, scaleFactor=1 }) => (
-                <Image url={texture} scale={scale} position-z={z} transparent={0.5}/>
+            {layers.map(({ texture, scale, z, scaleFactor = 1 }) => (
+                <Image url={texture} scale={scale} position-z={z} transparent={0.5} />
             ))}
+            <group ref={subject}>
+            <Text
+                scale={[15, 15, 1]}
+                position={[0, 15, 50]}
+                color="white" // default
+                font={Ghibli}
+                letterSpacing={0.3}
+            >
+                CADEN
+            </Text>
+            <Text
+                scale={[15, 15, 1]}
+                position={[0, -15, 50]}
+                color="white" // default
+                font={Ghibli}
+                letterSpacing={0.3}
+            >
+                JUANG
+            </Text>
+            </group>
         </group>
     )
 }
