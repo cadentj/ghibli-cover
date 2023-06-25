@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/ghibli-cover/static/css/main.e6c13ad2.css",
+    "main.js": "/ghibli-cover/static/js/main.793c6b20.js",
+    "static/js/787.1ed0c42c.chunk.js": "/ghibli-cover/static/js/787.1ed0c42c.chunk.js",
+    "static/media/middle.png": "/ghibli-cover/static/media/middle.d3329c80d7b2dbd0332e.png",
+    "static/media/bottom.png": "/ghibli-cover/static/media/bottom.b7d6e232e63b1fd9fb6b.png",
+    "static/media/top.png": "/ghibli-cover/static/media/top.3bf6842a2c2c35a65403.png",
+    "static/media/Eyad Al-Samman - Ghibli-Bold.otf": "/ghibli-cover/static/media/Eyad Al-Samman - Ghibli-Bold.262cc5ac87d34ba2f463.otf",
+    "index.html": "/ghibli-cover/index.html",
+    "main.e6c13ad2.css.map": "/ghibli-cover/static/css/main.e6c13ad2.css.map",
+    "main.793c6b20.js.map": "/ghibli-cover/static/js/main.793c6b20.js.map",
+    "787.1ed0c42c.chunk.js.map": "/ghibli-cover/static/js/787.1ed0c42c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.793c6b20.js"
+  ]
+}
