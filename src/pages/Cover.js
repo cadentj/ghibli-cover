@@ -41,7 +41,7 @@ function Scene({ dof }) {
             <group >
                 <Text
                     ref={subject}
-                    scale={[15, 15, 5]}
+                    scale={[300, 300, 5]}
                     position={[0, 15, 50]}
                     color="white" // default
                     font={Ghibli}
@@ -51,7 +51,7 @@ function Scene({ dof }) {
                 </Text>
                 <Text
                 ref={subject}
-                    scale={[15, 15, 5]}
+                scale={[300, 300, 5]}
                     position={[0, -15, 50]}
                     color="white" // default
                     font={Ghibli}
